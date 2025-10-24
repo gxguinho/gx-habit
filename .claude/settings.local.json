@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx ultracite:*)",
+      "Bash(tree:*)",
+      "Bash(bun add:*)",
+      "Bash(npx shadcn@latest add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,6 +1,231 @@
 # Project Context
 Ultracite enforces strict type safety, accessibility standards, and consistent code quality for JavaScript/TypeScript projects using Biome's lightning-fast formatter and linter.
 
+# GX-Habit: Water Tracker App
+
+## Objetivo do MVP
+Aplicação para rastreamento de consumo de água diário com as seguintes características:
+- Registrar rapidamente "X ml" de água ao longo do dia
+- Ver progresso vs. meta diária
+- Funcionar em desktop e mobile (responsivo + instalável como PWA)
+- Sem login obrigatório no MVP (sincronização é evolutiva)
+
+## Stack Técnico
+- **UI Components**: shadcn/ui (https://ui.shadcn.com/)
+- **Theme**: Baseado nas cores zinc e purple do shadcn/ui
+- **PWA**: Instalável com suporte offline
+
+## Critérios de Qualidade
+- **Performance**: TTI < 2s em 3G simulado; bundle inicial < ~200KB
+- **Acessibilidade**: Suporte a teclado, aria-labels, contraste AA
+- **Confiabilidade**: Não perder dados off-line; tratar inputs inválidos
+- **Usabilidade**: Sempre mostrar feedback (toast/snackbar)
+
+## Checklist de Entrega
+
+### Obrigatório no MVP
+- [ ] UX de 1 tela com fluxo de adição em 2 cliques
+- [ ] Barra/anel de progresso + total/percentual
+- [ ] Quick adds configuráveis
+- [ ] Persistência local robusta (IndexedDB/LocalStorage)
+- [ ] PWA instalável + offline básico
+- [ ] Editar/excluir lançamentos
+- [ ] Meta diária ajustável
+
+### Opcional (MVP+1)
+- [ ] Histórico + gráfico
+- [ ] Notificações locais
+- [ ] Login e sync em nuvem
+- [ ] Exportar CSV
+
+---
+
+# ⚠️ WORKFLOW OBRIGATÓRIO - USO DE SUBAGENTS
+
+## 🚨 REGRA CRÍTICA: USO MANDATÓRIO DE SUBAGENTS
+
+**ANTES DE QUALQUER IMPLEMENTAÇÃO DE CÓDIGO, VOCÊ (Claude Principal) DEVE OBRIGATORIAMENTE:**
+
+### 1️⃣ SEMPRE Chamar /subagent-architect PRIMEIRO
+```
+Quando: Antes de escrever qualquer linha de código
+Por quê: Planejamento arquitetural é OBRIGATÓRIO
+Nunca: Implementar sem ter o plano de arquitetura aprovado
+```
+
+### 2️⃣ SEMPRE Chamar /subagent-test Após Implementação
+```
+Quando: Após implementar funcionalidades
+Por quê: Análise de qualidade é OBRIGATÓRIA
+Nunca: Pular análise de testes
+```
+
+### 3️⃣ SEMPRE Chamar /subagent-security Após subagent-test
+```
+Quando: Após receber plano de testes
+Por quê: Segurança é OBRIGATÓRIA e não negociável
+Nunca: Deploy sem análise de segurança
+```
+
+## 📋 Fluxo MANDATÓRIO (SEM EXCEÇÕES)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ VOCÊ ESTÁ AQUI → Claude Principal                           │
+│                                                              │
+│ ANTES DE IMPLEMENTAR:                                       │
+│ ❗ OBRIGATÓRIO: /subagent-architect                         │
+│    ↓ aguardar resposta completa                            │
+│ ✅ Implementar código seguindo o plano                      │
+│    ↓                                                        │
+│ ❗ OBRIGATÓRIO: /subagent-test                              │
+│    ↓ aguardar resposta completa                            │
+│ ❗ OBRIGATÓRIO: /subagent-security                          │
+│    ↓ aguardar resposta completa                            │
+│ ✅ Implementar testes + Corrigir vulnerabilidades           │
+│ ✅ Executar testes                                          │
+│ ✅ Validar segurança                                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## ⛔ PROIBIÇÕES ABSOLUTAS
+
+### ❌ NUNCA faça isso:
+1. **Implementar código sem chamar /subagent-architect primeiro**
+   - Resultado: Arquitetura inconsistente, problemas futuros
+
+2. **Pular /subagent-test**
+   - Resultado: Código sem testes, baixa qualidade
+
+3. **Pular /subagent-security**
+   - Resultado: Vulnerabilidades em produção (CRÍTICO!)
+
+4. **Implementar sem esperar resposta dos subagents**
+   - Resultado: Trabalho descartado, retrabalho
+
+5. **Deixar subagents implementarem ou executarem código**
+   - Subagents APENAS analisam e recomendam
+   - Apenas VOCÊ (Claude Principal) implementa e executa
+
+## ✅ Checklist PRÉ-IMPLEMENTAÇÃO (Obrigatório)
+
+Antes de escrever código, confirme:
+- [ ] Li e entendi os requisitos
+- [ ] Chamei /subagent-architect
+- [ ] Recebi e revisei o plano de arquitetura completo
+- [ ] Entendo todos os componentes a serem criados
+- [ ] Sei qual tema aplicar (zinc + purple)
+- [ ] Conheço as interfaces TypeScript necessárias
+
+## ✅ Checklist PÓS-IMPLEMENTAÇÃO (Obrigatório)
+
+Após escrever código, confirme:
+- [ ] Chamei /subagent-test
+- [ ] Recebi o plano de testes completo
+- [ ] Chamei /subagent-security
+- [ ] Recebi o relatório de segurança completo
+- [ ] Implementei correções para vulnerabilidades CRÍTICAS
+- [ ] Implementei correções para vulnerabilidades ALTAS
+- [ ] Implementei os testes recomendados
+- [ ] Executei os testes (npx vitest)
+- [ ] Todos os testes passaram
+- [ ] Validei cobertura de código
+- [ ] npm audit não mostra vulnerabilidades críticas
+
+## 🎯 Exemplo Prático Completo
+
+### Tarefa: "Criar componente de adicionar água"
+
+#### ✅ CORRETO:
+```
+User: "Criar componente de adicionar água"
+
+Claude Principal:
+1. 🤔 "Vou iniciar seguindo o workflow obrigatório"
+2. 📞 Chama: /subagent-architect
+3. ⏳ Aguarda resposta completa do architect
+4. 📖 Lê e analisa o plano de arquitetura
+5. 💻 Implementa código seguindo o plano
+6. 📞 Chama: /subagent-test
+7. ⏳ Aguarda análise de qualidade
+8. 📞 Chama: /subagent-security
+9. ⏳ Aguarda análise de segurança
+10. 🔧 Corrige vulnerabilidades identificadas
+11. 🧪 Implementa testes recomendados
+12. ▶️ Executa testes: npx vitest
+13. ✅ Valida que tudo passou
+14. 🎉 Entrega completa
+```
+
+#### ❌ ERRADO:
+```
+User: "Criar componente de adicionar água"
+
+Claude Principal:
+1. 💻 Começa a codificar direto
+   ❌ ERRO: Pulou /subagent-architect!
+
+2. 📦 Comita código sem testes
+   ❌ ERRO: Pulou /subagent-test!
+
+3. 🚀 Faz deploy
+   ❌ ERRO: Pulou /subagent-security!
+   ❌ RESULTADO: Código com vulnerabilidades em produção
+```
+
+## 📚 Documentação dos Subagents
+
+Leia o WORKFLOW.md completo para detalhes:
+- `.claude/WORKFLOW.md` - Workflow completo
+- `.claude/agents/subagent-architect.md` - Specs do arquiteto
+- `.claude/agents/subagent-test.md` - Specs do analista de testes
+- `.claude/agents/subagent-security.md` - Specs do analista de segurança
+
+## 🔄 Quando Re-executar Subagents
+
+### Re-executar /subagent-architect quando:
+- Requisitos mudarem significativamente
+- Arquitetura precisar ser revisada
+- Adicionar novas features grandes
+- Mudar tecnologias/bibliotecas
+
+### Re-executar /subagent-test quando:
+- Implementar novas funcionalidades
+- Fazer refatorações grandes
+- Adicionar novos fluxos de usuário
+
+### Re-executar /subagent-security quando:
+- Implementar novas funcionalidades
+- Adicionar tratamento de dados sensíveis
+- Modificar lógica de validação
+- Atualizar dependências
+- Antes de cada deploy
+
+## 🎓 Você Aprenderá
+
+Seguindo este workflow, você garante:
+- ✅ Código bem arquitetado
+- ✅ Alta qualidade e cobertura de testes
+- ✅ Segurança robusta
+- ✅ Acessibilidade correta
+- ✅ Performance otimizada
+- ✅ Manutenibilidade
+
+## ⚡ Importante
+
+Este workflow NÃO é sugestão, é **MANDATÓRIO**.
+Não há exceções. Não há atalhos.
+Qualidade, segurança e acessibilidade são inegociáveis.
+
+**Sempre que receber uma tarefa de desenvolvimento:**
+1. Respire
+2. Leia os requisitos
+3. Chame /subagent-architect
+4. Siga o fluxo completo
+5. Entregue com qualidade
+
+---
+
 ## Key Principles
 - Zero configuration required
 - Subsecond performance
