@@ -29,6 +29,7 @@
   "dependencies": {
     "drizzle-orm": "^0.44.2",
     "@libsql/client": "^0.14.0",
+    "postgres": "^3.4.5",
     "dotenv": "catalog:",
     "zod": "catalog:"
   }

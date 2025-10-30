@@ -1,0 +1,65 @@
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+bun.lockb
+
+# Development files
+.git
+.gitignore
+*.md
+README.md
+CHANGELOG.md
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist
+build
+.next
+.turbo
+*.log
+
+# Testing
+coverage
+.nyc_output
+*.test.ts
+*.spec.ts
+__tests__
+__mocks__
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+# IMPORTANT: DO NOT ignore docker-entrypoint.sh - it's needed in the container!
+# !docker-entrypoint.sh
+
+# Apps não necessários no build do servidor
+apps/web
+apps/native
+
+# Drizzle
+*.db
+*.db-shm
+*.db-wal
+local.db

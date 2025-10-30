@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: gx-habit-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gxhabit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gxhabit123}
+      POSTGRES_DB: ${POSTGRES_DB:-gxhabit}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gxhabit} -d ${POSTGRES_DB:-gxhabit}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gx-habit-network
+
+  # Backend Server
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gx-habit-server
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-gxhabit}:${POSTGRES_PASSWORD:-gxhabit123}@postgres:5432/${POSTGRES_DB:-gxhabit}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3001}
+    ports:
+      - "${SERVER_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - gx-habit-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  gx-habit-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
